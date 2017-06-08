@@ -28,7 +28,7 @@ sed -i -e "s/blue/green/" service-bg.yaml
 kubectl apply -f service-bg.yaml
 ```
 
-5. check green deployed
+5. check green has been deployed
 
 ```bash
 curl 192.168.99.100:8080
