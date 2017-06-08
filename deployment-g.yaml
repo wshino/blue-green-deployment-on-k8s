@@ -1,0 +1,40 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: http-deploy-g
+spec:
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: http-app
+        color: green
+    spec:
+      containers:
+        - name: nginx
+          image: docker.io/jocatalin/kubernetes-bootcamp:v1
+          ports:
+            - name: http-port
+              containerPort: 8080
+          volumeMounts:
+            - name: docroot
+              mountPath: /usr/share/nginx/html
+        - name: html
+          image: busybox
+          command:
+            - tail
+            - -f
+            - /dev/null
+          volumeMounts:
+            - name: docroot
+              mountPath: /opt/html
+          lifecycle:
+            postStart:
+              exec:
+                command:
+                  - /bin/sh
+                  - -c
+                  - echo "<html><body>green</body></html>" > /opt/html/index.html
+      volumes:
+        - name: docroot
+          emptyDir: {}
